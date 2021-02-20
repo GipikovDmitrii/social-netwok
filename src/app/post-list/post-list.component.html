@@ -1,0 +1,11 @@
+<button (click)="_onCreate()">Create</button>
+<div class="post-list">
+
+    <ng-container *ngFor="let post of postList">
+        <cn-post [model]="post"
+                 (onRemove)="_onRemove($event)">
+        </cn-post>
+    </ng-container>
+
+</div>
+

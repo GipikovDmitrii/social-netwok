@@ -1,0 +1,17 @@
+<div class="post" [ngClass]="{'_full-size': fullSize}">
+    <div class="post-title">
+        <span>Title</span>
+        <span>{{model.title}}</span>
+    </div>
+    <div class="post-content">
+        <span>Content</span>
+        <span>{{model.body}}</span>
+    </div>
+
+    <ng-container *ngIf="!fullSize">
+        <button (click)="_onRemove()">Remove</button>
+        <a routerLink="/post/{{model.id}}">
+            <button>Open</button>
+        </a>
+    </ng-container>
+</div>
