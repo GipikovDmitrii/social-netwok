@@ -1,34 +1,35 @@
-import {Component, OnInit} from '@angular/core';
-import {Post} from '../post/post.component';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
+import {Post} from '../post/post.component';
 
 @Component({
     selector: 'cn-post-page',
     templateUrl: './post-page.component.html',
     styleUrls: ['./post-page.component.css']
 })
-export class PostPageComponent implements OnInit {
+export class PostPageComponent implements OnInit, OnChanges {
 
-    constructor(private http: HttpClient,
-                private activatedRouter: ActivatedRoute) {
+    constructor(private http: HttpClient) {
     }
 
     ngOnInit(): void {
-        this.activatedRouter.params
-            .subscribe(data => {
-                this.loadPost(data["id"])
-                    .subscribe((post: Post) => {
-                        this.post = post;
-                    })
-            })
+
     }
 
-    public post: Post;
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.id.currentValue) {
+            this.loadPost();
+        }
+    }
 
-    private loadPost(id: string): Observable<any> {
-        return this.http.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+    @Input()
+    public id: string;
+
+    public post: Observable<Post>;
+
+    private loadPost(): void {
+        this.post = <Observable<Post>>this.http.get(`http://localhost:3000/post/${this.id}`);
     }
 
 }
